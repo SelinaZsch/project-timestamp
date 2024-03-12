@@ -24,6 +24,57 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/", function (req, res) {
+  let currentTime = new Date();
+  res.json({ unix: currentTime.getTime(), utc: currentTime.toUTCString() });;
+});
+
+// Route handler for /api/:date
+app.get('/api/:date', (req, res) => {
+  let inputDate = req.params.date;
+
+  // Attempt to parse the inputDate
+  let parsedDate = new Date(inputDate);
+
+  if(parsedDate == 'Invalid Date'){
+    let parsedDate = new Date(parseInt(inputDate));
+    // Check if the parsedDate is valid
+    if (isNaN(parsedDate)) {
+        res.json({ error: 'Invalid Date' });
+        
+  }else{res.json({ unix: parsedDate.getTime(), utc: parsedDate.toUTCString() });}
+
+  } else {res.json({ unix: parsedDate.getTime(), utc: parsedDate.toUTCString() });
+  }
+});
+
+// API date input 
+/*app.get("/api/:date?", function (req, res) {
+
+console.log(req.params.date);
+let inputDate = req.params.date;
+
+if (inputDate = ""){
+  let d = Date.now();
+  let utcDate = inputDate.toUTCString();
+  let unixDate = Date.parse(utcDate)
+  res.json({unix: unixDate, utc:utcDate});}
+
+else{
+  let DateObj = new Date(inputDate);
+
+  if (!isNaN(inputDate)) {
+    console.log('Das Datum ist gültig.');
+
+    let utcDate = DateObj.toUTCString();
+    let unixDate = Date.parse(utcDate)
+    res.json({unix: unixDate, utc:utcDate});
+  } else {
+    res.json({error: "Invalid Date"});
+  }}
+  
+  //
+});*/
 
 
 // Listen on port set in environment variable or default to 3000
